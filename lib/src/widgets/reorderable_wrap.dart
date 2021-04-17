@@ -934,27 +934,9 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
       }
 
       bool _onWillAccept(int? toAccept, bool isPre) {
-        int nextDisplayIndex;
-        if (_currentDisplayIndex < displayIndex) {
-          nextDisplayIndex = isPre ? displayIndex - 1 : displayIndex;
-        } else {
-          nextDisplayIndex = !isPre ? displayIndex + 1 : displayIndex;
-        }
+        int nextDisplayIndex = displayIndex;
+        var willAccept = true;
 
-        bool movingToAdjacentChild =
-            nextDisplayIndex <= _currentDisplayIndex + 1 &&
-                nextDisplayIndex >= _currentDisplayIndex - 1;
-        bool willAccept = _dragStartIndex == toAccept &&
-//          toAccept != toWrap.key &&
-            toAccept != index &&
-            (_entranceController.isCompleted || !movingToAdjacentChild) &&
-            _currentDisplayIndex != nextDisplayIndex;
-//        debugPrint('_onWillAccept: index:$index displayIndex:$displayIndex toAccept:$toAccept return:$willAccept isPre:$isPre '
-//          '_currentDisplayIndex:$_currentDisplayIndex nextDisplayIndex:$nextDisplayIndex _dragStartIndex:$_dragStartIndex');
-
-        if (!willAccept) {
-          return false;
-        }
         if (!(_childDisplayIndexToIndex[_currentDisplayIndex] != index &&
             _currentDisplayIndex != displayIndex)) {
           return false;
@@ -982,22 +964,22 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
 
         setState(() {
           _nextDisplayIndex = nextDisplayIndex;
-
           _requestAnimationToNextIndex(isAcceptingNewTarget: true);
+          // print('anim next: $nextDisplayIndex');
         });
         _scrollTo(context);
         // If the target is not the original starting point, then we will accept the drop.
         return willAccept; //_dragging == toAccept && toAccept != toWrap.key;
       }
 
-      Widget preDragTarget = DragTarget<int>(
-        builder: (BuildContext context, List<int?> acceptedCandidates,
-                List<dynamic> rejectedCandidates) =>
-            SizedBox(),
-        onWillAccept: (int? toAccept) => _onWillAccept(toAccept, true),
-        onAccept: (int accepted) {},
-        onLeave: (Object? leaving) {},
-      );
+      // Widget preDragTarget = DragTarget<int>(
+      //   builder: (BuildContext context, List<int?> acceptedCandidates,
+      //           List<dynamic> rejectedCandidates) =>
+      //       SizedBox(),
+      //   onWillAccept: (int? toAccept) => _onWillAccept(toAccept, true),
+      //   onAccept: (int accepted) {},
+      //   onLeave: (Object? leaving) {},
+      // );
       Widget nextDragTarget = DragTarget<int>(
         builder: (BuildContext context, List<int?> acceptedCandidates,
                 List<dynamic> rejectedCandidates) =>
@@ -1013,24 +995,24 @@ class _ReorderableWrapContentState extends State<_ReorderableWrapContent>
         clipBehavior: Clip.hardEdge,
         children: <Widget>[
           containedDraggable,
-          Positioned(
-              left: 0,
-              top: 0,
-              width: widget.direction == Axis.horizontal
-                  ? _childSizes[index].width / 2
-                  : _childSizes[index].width,
-              height: widget.direction == Axis.vertical
-                  ? _childSizes[index].height / 2
-                  : _childSizes[index].height,
-              child: preDragTarget),
+          // Positioned(
+          //     left: 0,
+          //     top: 0,
+          //     width: widget.direction == Axis.horizontal
+          //         ? _childSizes[index].width / 2
+          //         : _childSizes[index].width,
+          //     height: widget.direction == Axis.vertical
+          //         ? _childSizes[index].height / 2
+          //         : _childSizes[index].height,
+          //     child: preDragTarget),
           Positioned(
               right: 0,
               bottom: 0,
               width: widget.direction == Axis.horizontal
-                  ? _childSizes[index].width / 2
+                  ? _childSizes[index].width
                   : _childSizes[index].width,
               height: widget.direction == Axis.vertical
-                  ? _childSizes[index].height / 2
+                  ? _childSizes[index].height
                   : _childSizes[index].height,
               child: nextDragTarget),
         ],

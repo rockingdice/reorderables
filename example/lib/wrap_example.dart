@@ -15,15 +15,15 @@ class _WrapExampleState extends State<WrapExample> {
   void initState() {
     super.initState();
     _tiles = <Widget>[
-      Icon(Icons.filter_1, size: _iconSize),
-      Icon(Icons.filter_2, size: _iconSize),
-      Icon(Icons.filter_3, size: _iconSize),
-      Icon(Icons.filter_4, size: _iconSize),
-      Icon(Icons.filter_5, size: _iconSize),
-      Icon(Icons.filter_6, size: _iconSize),
-      Icon(Icons.filter_7, size: _iconSize),
-      Icon(Icons.filter_8, size: _iconSize),
-      Icon(Icons.filter_9, size: _iconSize),
+      Container(width: 220.0, child: Icon(Icons.filter_1, size: _iconSize)),
+      Container(width: 220.0, child: Icon(Icons.filter_2, size: _iconSize)),
+      Container(width: 220.0, child: Icon(Icons.filter_3, size: _iconSize)),
+      Container(width: 220.0, child: Icon(Icons.filter_4, size: _iconSize)),
+      Container(width: 220.0, child: Icon(Icons.filter_5, size: _iconSize)),
+      Container(width: 220.0, child: Icon(Icons.filter_6, size: _iconSize)),
+      Container(width: 220.0, child: Icon(Icons.filter_7, size: _iconSize)),
+      Container(width: 220.0, child: Icon(Icons.filter_8, size: _iconSize)),
+      Container(width: 220.0, child: Icon(Icons.filter_9, size: _iconSize)),
     ];
   }
 
@@ -37,20 +37,21 @@ class _WrapExampleState extends State<WrapExample> {
     }
 
     var wrap = ReorderableWrap(
-      spacing: 8.0,
-      runSpacing: 4.0,
-      padding: const EdgeInsets.all(8),
-      children: _tiles,
-      onReorder: _onReorder,
-      onNoReorder: (int index) {
-        //this callback is optional
-        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
-      },
-      onReorderStarted: (int index) {
-        //this callback is optional
-        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
-      }
-    );
+        spacing: 8.0,
+        runSpacing: 4.0,
+        padding: const EdgeInsets.all(8),
+        children: _tiles,
+        onReorder: _onReorder,
+        onNoReorder: (int index) {
+          //this callback is optional
+          debugPrint(
+              '${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+        },
+        onReorderStarted: (int index) {
+          //this callback is optional
+          debugPrint(
+              '${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
+        });
 
     var column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,6 +91,5 @@ class _WrapExampleState extends State<WrapExample> {
     return SingleChildScrollView(
       child: column,
     );
-
   }
 }
